@@ -1,6 +1,6 @@
 # IPScan
 
-IPScan is a multi-threaded .NET library written in C# created to generate IP addresses using specified masks and ranges.
+IPScan is a multi-threaded .NET library written in C# that was created to generate IP addresses using specified masks and ranges.
 
 IPScan allows you to provide IP masks (e.g 192.168.X.X) and will then generate all IP addresses that fall within that range:
 
@@ -34,7 +34,7 @@ The below example will start a scan using an IP mask of 192.X.X.X. This will gen
 
 * 192.0.0.0 - 192.255.255.255 
 
-```
+```cs
 private void DefaultScan()
 {
     var scan = new DefaultScan();
@@ -53,7 +53,7 @@ private void IPGenerated(object sender, ScanArgs e)
 
 The below example scans the entire public IP range, this can be useful for automated tools such as uptime calculators.
 
-```
+```cs
 private void PublicScan()
 {
     var scan = new PublicScan(IPGenerated);
@@ -72,7 +72,7 @@ The below example will scan the below range but will exclude any addresses that 
 
 * 192.168.0.0 - 192.168.255.255
 
-```
+```cs
 private void BlacklistScan()
 {
     var blacklist = new List<string>()
@@ -96,11 +96,11 @@ For more examples please see the IPScan.Examples project.
 
 ## Contributing
 
-TBC
+See the [CONTRIBUTING.md](CONTRIBUTING.md) file for details.
 
 ## Authors
 
-* **Matthew Croston** - *Original Creator* - [mc-soft](https://github.com/mc-soft)
+* **Matthew Croston** - *Original Developer* - [mc-soft](https://github.com/mc-soft) [http://m-croston.co.uk/](http://www.m-croston.co.uk/)
 
 ## License
 
