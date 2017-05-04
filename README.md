@@ -14,7 +14,7 @@ Simply clone the git repository to your computer and build the solution.
 
 ### Prerequisites
 
-IPScan requires version 4.5 of the .NET framework which can be downloaded from
+IPScan requires version 4.5 of the .NET framework which can be downloaded from:
 
 ```
 https://www.microsoft.com/en-gb/download/details.aspx?id=30653
@@ -100,7 +100,7 @@ See the [CONTRIBUTING.md](CONTRIBUTING.md) file for details.
 
 ## Authors
 
-* **Matthew Croston** - *Original Developer* - [mc-soft](https://github.com/mc-soft) [http://m-croston.co.uk/](http://www.m-croston.co.uk/)
+* **Matthew Croston** - *Original Developer* - [mc-soft](https://github.com/mc-soft) - [http://m-croston.co.uk/](http://www.m-croston.co.uk/)
 
 ## License
 
