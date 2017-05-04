@@ -68,7 +68,7 @@ private void IPGenerated(object sender, ScanArgs e)
 
 ### IP Mask Blacklist Example
 
-The below example will scan the below range but will exclude any addresses that fall within the blacklisted masks (192.168.X.X)
+The below example will scan the below range but will exclude any addresses that fall within the blacklisted masks (192.168.0.X)
 
 * 192.168.0.0 - 192.168.255.255
 
