@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.9
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IPScan", "IPScan\IPScan.csproj", "{438477FA-DE35-476F-AA06-C3BF4066EBEB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IPScan.Examples", "Examples\IPScan.Examples.csproj", "{D6F0C4F2-7304-4E3F-A651-18FAB15402C2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{438477FA-DE35-476F-AA06-C3BF4066EBEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{438477FA-DE35-476F-AA06-C3BF4066EBEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{438477FA-DE35-476F-AA06-C3BF4066EBEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{438477FA-DE35-476F-AA06-C3BF4066EBEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6F0C4F2-7304-4E3F-A651-18FAB15402C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6F0C4F2-7304-4E3F-A651-18FAB15402C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6F0C4F2-7304-4E3F-A651-18FAB15402C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6F0C4F2-7304-4E3F-A651-18FAB15402C2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
