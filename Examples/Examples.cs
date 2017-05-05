@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.NetworkInformation;
-using System.Threading.Tasks;
 using IPScan;
 
 namespace Examples
 {
-    class Program
+    internal class Examples
     {
         private static void Main(string[] args)
         {
-            Console.WriteLine("Beginning public IP scan....");
-            
-            PublicScan();
         }
 
         /// <summary>
@@ -44,6 +41,19 @@ namespace Examples
         }
 
         /// <summary>
+        /// Generates the whole 192.X.X.X range with modified active worker threads.
+        /// </summary>
+        private static void DefaultScanWithModifiedThreadCount()
+        {
+            var scan = new DefaultScan();
+            scan.IPAddressGenerated += IPGenerated;
+            scan.MinimumThreadCount = 50;
+            scan.MaximumThreadCount = 100;
+
+            scan.Scan("192.X.X.X");
+        }
+
+        /// <summary>
         /// This will generate the 192.168.X.X range, excluding any addresses that fall within the 192.168.0.X range.
         /// </summary>
         private static void BlacklistScan()
@@ -65,7 +75,22 @@ namespace Examples
         private static void PublicScan()
         {
             var scan = new PublicScan(IPGenerated);
+            
             scan.Scan();
+        }
+
+        /// <summary>
+        /// Generates the whole public IP range with min/max threads set.
+        /// </summary>
+        private static void PublicScanWithIncreasedThreads()
+        {
+            // Sets the minimum number of active worker threads to 100.
+            var scan = new PublicScan(IPGenerated, 100);
+            scan.Scan();
+
+            // Sets the minimum number of active worker threads to 100 and the maximum to 150.
+            var scan2 = new PublicScan(IPGenerated, 100, 150);
+            scan2.Scan();
         }
 
         /// <summary>
@@ -78,19 +103,29 @@ namespace Examples
         }
 
         /// <summary>
+        /// Generates the whole private IP range with min/max threads set.
+        /// </summary>
+        private static void PrivateScanWithIncreasedThreads()
+        {
+            // Sets the minimum number of active worker threads to 100.
+            var scan = new PrivateScan(IPGenerated, 100);
+            scan.Scan();
+
+            // Sets the minimum number of active worker threads to 100 and the maximum to 150.
+            var scan2 = new PrivateScan(IPGenerated, 100, 150);
+            scan2.Scan();
+        }
+
+        /// <summary>
         /// The IPAddressGenerated event handler.
         /// </summary>
         /// <param name="sender">The sender IPScanner base class.</param>
         /// <param name="e">The ScanArgs, containing the IP address generated.</param>
         private static void IPGenerated(object sender, ScanArgs e)
         {
-            Task.Factory.StartNew(() =>
-                {
-                    if (IsPingable(e.IPAddress))
-                        Console.WriteLine($"[{e.IPAddress}] Ping response received.");
-                });
+            if (IsPingable(e.IPAddress))
+                Console.WriteLine($"[{e.IPAddress}] Ping response received.");
         }
-        
 
         /// <summary>
         /// Quickly check if an IP address is pingable (Timeout = 2500).
@@ -103,11 +138,11 @@ namespace Examples
             {
                 try
                 {
-                    var response = p.Send(ip, 1500);
+                    var response = p.Send(IPAddress.Parse(ip), 1500);
                     if (response != null && response.Status == IPStatus.Success)
                         return true;
                 }
-                catch { }
+                catch { p.Dispose(); }
             }
 
             return false;

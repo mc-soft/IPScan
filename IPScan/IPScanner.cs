@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace IPScan
@@ -10,6 +11,18 @@ namespace IPScan
     /// </summary>
     public abstract class IPScanner
     {
+        /// <summary>
+        /// Sets the maximum number of worker threads that can be active concurrently.
+        /// </summary>
+        public int MaximumThreadCount { get; set; } = 0;
+
+        //TODO: Fix this (Reduce memory consumption, limit tasks generated before spawning new ones?)
+        /// <summary>
+        /// Sets the minimum number of worker threads that can be active concurrently.
+        /// [WARNING] Setting this too high can cause the application to terminate.
+        /// </summary>
+        public int MinimumThreadCount { get; set; } = 0;
+
         /// <summary>
         /// Delegate for the IPAddressGenerated event.
         /// </summary>
@@ -21,7 +34,12 @@ namespace IPScan
         /// The event that will be triggered when a new IP address has been generated using the provided mask(s).
         /// </summary>
         public event IPScanHandler IPAddressGenerated;
-        
+
+        /// <summary>
+        /// Boolean variable to check if the ThreadPool values have been set.
+        /// </summary>
+        private bool _initialized;
+
         /// <summary>
         /// Generates IP addresses based on the given IP mask.
         /// </summary>
@@ -30,6 +48,12 @@ namespace IPScan
         {
             if (IPAddressGenerated == null)
                 throw new NullReferenceException("IPAddressGenerated event not handled.");
+
+            if (!_initialized)
+            {
+                SetThreadPool(MinimumThreadCount, MaximumThreadCount);
+                _initialized = true;
+            }
 
             ScanMask(mask.ToLower()).Wait();
         }
@@ -44,7 +68,7 @@ namespace IPScan
                 throw new NullReferenceException("IPAddressGenerated event not handled.");
 
             var tasks = masks.Select(mask => Task.Factory.StartNew(() => Scan(mask))).ToList();
-
+            
             return Task.WhenAll(tasks);
         }
 
@@ -83,8 +107,29 @@ namespace IPScan
                     tasks.Add(Task.Factory.StartNew(() => ScanMask(address + suffix)));
                 }
             }
-            
+
             return Task.WhenAll(tasks);
+        }
+
+        /// <summary>
+        /// Sets the min/max values for the ThreadPool.
+        /// </summary>
+        /// <param name="minThreadCount">The minimum number of worker threads that can be active concurrently.</param>
+        /// <param name="maxThreadCount">The maximum number of worker threads that can be active concurrently.</param>
+        private static void SetThreadPool(int minThreadCount, int maxThreadCount)
+        {
+            int minWorker, minIO;
+            ThreadPool.GetMinThreads(out minWorker, out minIO);
+
+            Console.WriteLine(minThreadCount);
+
+            if (minThreadCount != 0)
+                if (!ThreadPool.SetMinThreads(minThreadCount, minIO))
+                    throw new Exception("Failed to set the minimum thread count.");
+
+            if (maxThreadCount != 0)
+                if (!ThreadPool.SetMaxThreads(maxThreadCount, minIO))
+                    throw new Exception("Failed to set the maximum thread count.");
         }
     }
 }
