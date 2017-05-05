@@ -92,6 +92,52 @@ private void IPGenerated(object sender, ScanArgs e)
 }
 ```
 
+### Setting ThreadPool values to allow more concurrent threads
+
+IPScan now supports modified ThreadPool values which allows you to increase/decrease the number of active concurrent worker threads.
+
+A word of caution: 
+
+* Setting the minimum number of threads too high can cause the program to terminate.
+
+#### DefaultScan modified thread count
+
+Here we run a default mask scan with the minimum number of concurrent threads set to 50 and the maximum set to 100.
+
+```cs
+private void DefaultScanWithModifiedThreadCount()
+{
+    var scan = new DefaultScan();
+    scan.IPAddressGenerated += IPGenerated;
+    scan.MinimumThreadCount = 50;
+    scan.MaximumThreadCount = 100;
+
+    scan.Scan("192.X.X.X");
+}
+
+private void IPGenerated(object sender, ScanArgs e)
+{
+    Console.WriteLine(e.IPAddress);
+}
+```
+
+#### PublicScan modified thread count
+
+Here we perform a public mask scan using modified ThreadPool values. The PrivateScan type also takes the same constructor arguments.
+
+```cs
+private static void PublicScanWithIncreasedThreads()
+{
+    // Sets the minimum number of active worker threads to 100.
+    var scan = new PublicScan(IPGenerated, 100);
+    scan.Scan();
+
+    // Sets the minimum number of active worker threads to 100 and the maximum to 150.
+    var scan2 = new PublicScan(IPGenerated, 100, 150);
+    scan2.Scan();
+}
+```
+
 For more examples please see the IPScan.Examples project.
 
 ## Contributing
@@ -105,3 +151,9 @@ See the [CONTRIBUTING.md](CONTRIBUTING.md) file for details.
 ## License
 
 This project is licensed under the GNUv3 License - see the [LICENSE.md](LICENSE.md) file for details
+
+## Change Log
+
+v1.1.0:
+
+* Added support for modified ThreadPool values.
