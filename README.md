@@ -28,7 +28,7 @@ Once you have built the solution you will need the reference IPScan.dll in any p
 
 IPScan has been created to be as user friendly as possible. You can choose to specify custom masks or use the built-in classes to target the public/private IP address ranges.
 
-Before you being, you will need to import the IPScan namespace:
+Before you begin, you will need to import the IPScan namespace:
 
 ```cs
 using IPScan;
